@@ -38,11 +38,16 @@
         <!-- Menu latéral -->
         <StackPanel Background="#EAB8B8" VerticalAlignment="Stretch" Grid.Column="0">
             <Ellipse Width="60" Height="60" Fill="#C26B6B" HorizontalAlignment="Center" Margin="10"/>
-            <Button Content="Accueil" Margin="10" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button Content="Evènements" Margin="10" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button Content="Contacts" Margin="10" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button Content="A faire" Margin="10" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button Content="Messages" Margin="10" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Content="Accueil" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="10" Width="10" Source="/Resources/home.png"></Image>
+                    <Label Content="Evènements"></Label>
+                </StackPanel>
+            </Button>
+            <Button Content="Contacts" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Content="A faire" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Content="Messages" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
         </StackPanel>
 
         <!-- Contenu principal -->

@@ -38,22 +38,47 @@
         <!-- Menu latéral -->
         <StackPanel Background="#EAB8B8" VerticalAlignment="Stretch" Grid.Column="0">
             <Ellipse Width="60" Height="60" Fill="#C26B6B" HorizontalAlignment="Center" Margin="10"/>
-            <Button Content="Accueil" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}">
+            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Accueil" Click="BTN_Accueil_Click">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="10" Width="10" Source="/Resources/home.png"></Image>
-                    <Label Content="Evènements"></Label>
+                    <Image Height="20" Width="20" Source="/Resources/home.png"></Image>
+                    <Label Content="Accueil" FontFamily="Dubai" FontWeight="Bold"></Label>
                 </StackPanel>
             </Button>
-            <Button Content="Contacts" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button Content="A faire" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button Content="Messages" Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}"/>
+
+            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Evenements" Click="BTN_Evenements_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="20" Width="20" Source="/Resources/if_piste.png"></Image>
+                    <Label Content="Evènements" FontFamily="Dubai" FontWeight="Bold"></Label>
+                </StackPanel>
+            </Button>
+
+            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Contacts" Click="BTN_Contacts_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="20" Width="20" Source="/Resources/if_user.png"></Image>
+                    <Label Content="Contacts" FontFamily="Dubai" FontWeight="Bold"></Label>
+                </StackPanel>
+            </Button>
+
+            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_ToDoList" Click="BTN_ToDoList_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="20" Width="20" Source="/Resources/todolist.png"></Image>
+                    <Label Content="A faire" FontFamily="Dubai" FontWeight="Bold"></Label>
+                </StackPanel>
+            </Button>
+
+            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Messages" Click="BTN_Messages_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="20" Width="20" Source="/Resources/messages.png"></Image>
+                    <Label Content="Messages" FontFamily="Dubai" FontWeight="Bold"></Label>
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!-- Contenu principal -->
-        <Grid Grid.Column="1" Background="White">
+        <Grid Grid.Column="1" Background="SeaShell" x:Name="Window_content">
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Margin="20">

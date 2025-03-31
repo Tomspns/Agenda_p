@@ -76,11 +76,6 @@
 
         <!-- Contenu principal -->
         <Grid Grid.Column="1" Background="SeaShell" x:Name="Window_content">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="120"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
             <StackPanel Margin="20">
                 <!-- Barre de recherche -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">

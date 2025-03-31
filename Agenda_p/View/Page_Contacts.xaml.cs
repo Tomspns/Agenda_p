@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Agenda_p.DAO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,16 @@ namespace Agenda_p.View
         public Page_Contacts()
         {
             InitializeComponent();
+            LoadContacts();
+        }
+
+        private void LoadContacts()
+        {
+            using (var context = new AgendaTomContext())
+            {
+                var contacts = context.Contacts.ToList(); // Récupère tous les contacts
+                ContactsListView.ItemsSource = contacts; // Lier les données au ListView
+            }
         }
     }
 }

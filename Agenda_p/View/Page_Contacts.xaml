@@ -6,36 +6,58 @@
              xmlns:local="clr-namespace:Agenda_p.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Green">
+    <Grid Background="Pink">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <!-- Pour prendre tout l'espace restant -->
             <RowDefinition Height="Auto" />
-            <!-- Pour l'espace du ListView -->
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
-            <!-- Autres éléments que tu pourrais ajouter en haut -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20" HorizontalAlignment="Center">
+            <Grid>
+                <TextBox Name="SearchTextBox" Width="200" Margin="0,0,10,0" />
+                <TextBlock Text="Rechercher un utilisateur..." 
+                           Foreground="Gray" 
+                           VerticalAlignment="Center"
+                           Margin="5,0,0,0" 
+                           IsHitTestVisible="False"
+                           Visibility="{Binding ElementName=SearchTextBox, Path=Text.Length}"/>
+            </Grid>
+            <Button Content="Rechercher" Click="SearchButton_Click" Background="PeachPuff"/>
         </StackPanel>
 
         <ListView Name="ContactsListView" 
                   Grid.Row="1" 
                   HorizontalAlignment="Right" 
-                  VerticalAlignment="Bottom"
-                  Margin="10" 
-                  Width="300" 
-                  Height="200">
-            <!-- Ajuste la largeur et la hauteur selon tes besoins -->
+                  VerticalAlignment="Stretch"
+                  Margin="20"
+                  Width="1000"
+                  Background="Transparent">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Nom}" />
-                    <GridViewColumn Header="Prénom" DisplayMemberBinding="{Binding Prénom}" />
-                    <GridViewColumn Header="Naissance" DisplayMemberBinding="{Binding Naissance}" />
-                    <GridViewColumn Header="E-mail" DisplayMemberBinding="{Binding Email}" />
-                    <GridViewColumn Header="Numéro de téléphone" DisplayMemberBinding="{Binding Numéro}" />
+                    <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Nom}" Width="100"  />
+                    <GridViewColumn Header="Prénom" DisplayMemberBinding="{Binding Prénom}" Width="100" />
+                    <GridViewColumn Header="Naissance" DisplayMemberBinding="{Binding Naissance}" Width="100" />
+                    <GridViewColumn Header="E-mail" DisplayMemberBinding="{Binding Email}" Width="200" />
+                    <GridViewColumn Header="Numéro de téléphone" DisplayMemberBinding="{Binding Numéro}" Width="200" />
                 </GridView>
             </ListView.View>
+            <ListView.Resources>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Background" Value="PeachPuff"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </ListView.Resources>
         </ListView>
 
+        <Button Content="Ajouter un Contact" 
+                Click="AddContactButton_Click" 
+                Width="200" 
+                Height="50"
+                Margin="20" 
+                Grid.Row="2" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom"
+                Background="PeachPuff"/>
     </Grid>
 </UserControl>

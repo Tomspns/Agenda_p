@@ -21,19 +21,57 @@ namespace Agenda_p.View
     /// </summary>
     public partial class Page_Contacts : UserControl
     {
+        private List<Contact> contacts = new List<Contact>(); // Initialise contacts
+
         public Page_Contacts()
         {
             InitializeComponent();
             LoadContacts();
         }
 
-        private void LoadContacts()
+        public void LoadContacts()
         {
             using (var context = new AgendaTomContext())
             {
-                var contacts = context.Contacts.ToList(); // Récupère tous les contacts
+                contacts = context.Contacts.ToList(); // Récupère tous les contacts
                 ContactsListView.ItemsSource = contacts; // Lier les données au ListView
             }
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Vérifie si contacts est initialisé
+                if (contacts == null || !contacts.Any())
+                {
+                    MessageBox.Show("La liste des contacts n'est pas initialisée ou vide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                string searchTerm = SearchTextBox.Text.ToLower(); // Récupère le texte de recherche
+
+                var filteredContacts = contacts
+                    .Where(c => (c.Nom != null && c.Nom.ToLower().Contains(searchTerm)) || // Filtrer par nom
+                                (c.Prénom != null && c.Prénom.ToLower().Contains(searchTerm)) || // Filtrer par prénom
+                                (c.Email != null && c.Email.ToLower().Contains(searchTerm))) // Filtrer par email
+                    .ToList();
+
+                ContactsListView.ItemsSource = filteredContacts; // Met à jour le ListView avec les résultats filtrés
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Une erreur s'est produite : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void AddContactButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Crée une nouvelle instance de la page d'ajout de contact
+            var addContactPage = new Page_AddUser();
+
+            // Change le contenu de la fenêtre principale
+            Application.Current.MainWindow.Content = addContactPage; // Utiliser MainWindow
         }
     }
 }

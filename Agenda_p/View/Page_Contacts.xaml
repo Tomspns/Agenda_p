@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20" HorizontalAlignment="Center">
@@ -31,16 +32,20 @@
                   VerticalAlignment="Stretch"
                   Margin="20"
                   Width="1000"
-                  Background="Transparent">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Nom}" Width="100"  />
-                    <GridViewColumn Header="Prénom" DisplayMemberBinding="{Binding Prénom}" Width="100" />
-                    <GridViewColumn Header="Naissance" DisplayMemberBinding="{Binding Naissance}" Width="100" />
-                    <GridViewColumn Header="E-mail" DisplayMemberBinding="{Binding Email}" Width="200" />
-                    <GridViewColumn Header="Numéro de téléphone" DisplayMemberBinding="{Binding Numéro}" Width="200" />
-                </GridView>
-            </ListView.View>
+                  Background="Transparent"
+                  SelectionMode="Single">
+            <!-- Permet la sélection unique -->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <TextBlock Text="{Binding Nom}" Width="100"/>
+                        <TextBlock Text="{Binding Prénom}" Width="100"/>
+                        <TextBlock Text="{Binding Naissance}" Width="100"/>
+                        <TextBlock Text="{Binding Email}" Width="200"/>
+                        <TextBlock Text="{Binding Numéro}" Width="200"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
             <ListView.Resources>
                 <Style TargetType="GridViewColumnHeader">
                     <Setter Property="Background" Value="PeachPuff"/>
@@ -50,14 +55,18 @@
             </ListView.Resources>
         </ListView>
 
-        <Button Content="Ajouter un Contact" 
-                Click="AddContactButton_Click" 
-                Width="200" 
-                Height="50"
-                Margin="20" 
-                Grid.Row="2" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Bottom"
-                Background="PeachPuff"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="20">
+            <Button Content="Ajouter un Contact" 
+                    Click="AddContactButton_Click" 
+                    Width="200" 
+                    Height="50"
+                    Background="PeachPuff"/>
+            <Button Content="Supprimer un Contact" 
+                    Click="DeleteUserButton_Click" 
+                    Width="200"
+                    Height="50"
+                    Margin="10,0,0,0"
+                    Background="PeachPuff"/>
+        </StackPanel>
     </Grid>
 </UserControl>

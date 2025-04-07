@@ -6,29 +6,30 @@
              xmlns:local="clr-namespace:Agenda_p.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="White">
+        <!-- Ajout du fond blanc ici -->
         <StackPanel>
-            <Grid>
-                <TextBox x:Name="FirstNameTextBox" Width="200" Margin="5" />
-                <TextBlock Text="Prénom" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <Grid Margin="5">
+                <TextBlock Text="Prénom" Foreground="Gray" VerticalAlignment="Center"/>
+                <TextBox x:Name="FirstNameTextBox" Width="200" Margin="0,5,0,0" />
             </Grid>
-            <Grid>
-                <TextBox x:Name="LastNameTextBox" Width="200" Margin="5" />
-                <TextBlock Text="Nom" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <Grid Margin="5">
+                <TextBlock Text="Nom" Foreground="Gray" VerticalAlignment="Center"/>
+                <TextBox x:Name="LastNameTextBox" Width="200" Margin="0,5,0,0" />
             </Grid>
-            <Grid>
-                <DatePicker x:Name="BirthDatePicker" Width="200" Margin="5" />
+            <Grid Margin="5">
+                <TextBlock Text="Date de Naissance" Foreground="Gray" VerticalAlignment="Center"/>
+                <DatePicker x:Name="BirthDatePicker" Width="200" Margin="0,5,0,0" />
             </Grid>
-            <Grid>
-                <TextBox x:Name="EmailTextBox" Width="200" Margin="5" />
-                <TextBlock Text="Email" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <Grid Margin="5">
+                <TextBlock Text="Email" Foreground="Gray" VerticalAlignment="Center"/>
+                <TextBox x:Name="EmailTextBox" Width="200" Margin="0,5,0,0" />
             </Grid>
-            <Grid>
-                <TextBox x:Name="PhoneTextBox" Width="200" Margin="5" />
-                <TextBlock Text="Numéro de Téléphone" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <Grid Margin="5">
+                <TextBlock Text="Numéro de Téléphone" Foreground="Gray" VerticalAlignment="Center"/>
+                <TextBox x:Name="PhoneTextBox" Width="200" Margin="0,5,0,0" />
             </Grid>
             <Button Content="Ajouter" Click="AddButton_Click" Margin="10" />
         </StackPanel>
-
     </Grid>
 </UserControl>

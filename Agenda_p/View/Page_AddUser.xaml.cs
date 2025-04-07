@@ -43,18 +43,20 @@ namespace Agenda_p.View
                     Numéro = PhoneTextBox.Text
                 };
 
-                // Crée une instance de UserAddDao
                 UserAddDao userAddDao = new UserAddDao();
-                userAddDao.AddUser(contact); // Utilise l'instance pour ajouter le contact
+                userAddDao.AddUser(contact);
+
+                // Naviguer à la page de contacts
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                if (mainWindow != null)
+                {
+                    mainWindow.MainFrame.Navigate(new Page_Contacts()); // Naviguer vers Page_Contacts
+                }
             }
             else
             {
                 MessageBox.Show("Veuillez sélectionner une date de naissance.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
-            // Retourner à la page précédente
-            var parentPage = (Page_Contacts)Application.Current.MainWindow.Content;
-            parentPage.LoadContacts(); // Recharge les contacts
         }
     }
 }

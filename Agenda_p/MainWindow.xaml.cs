@@ -20,6 +20,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        // Supprimer la navigation initiale vers Page_Contacts
+        // MainFrame.Navigate(new Page_Contacts()); // Commentée ou supprimée
     }
 
     private void BTN_Accueil_Click(object sender, RoutedEventArgs e)
@@ -40,13 +42,13 @@ public partial class MainWindow : Window
     {
         Window_content.Children.Clear();
         Page_Contacts pagecontacts = new Page_Contacts();
-        Window_content.Children.Add(pagecontacts);
+        Window_content.Children.Add(pagecontacts); // Affiche les contacts ici
     }
 
     private void BTN_ToDoList_Click(object sender, RoutedEventArgs e)
     {
         Window_content.Children.Clear();
-        Page_Accueil pageaccueil = new Page_Accueil();
+        Page_Accueil pageaccueil = new Page_Accueil(); // Remplacement ici
         Window_content.Children.Add(pageaccueil);
     }
 

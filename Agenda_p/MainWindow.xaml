@@ -38,43 +38,44 @@
         <!-- Menu latéral -->
         <StackPanel Background="#EAB8B8" VerticalAlignment="Stretch" Grid.Column="0">
             <Ellipse Width="60" Height="60" Fill="#C26B6B" HorizontalAlignment="Center" Margin="10"/>
+
             <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Accueil" Click="BTN_Accueil_Click">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/home.png"></Image>
-                    <Label Content="Accueil" FontFamily="Dubai" FontWeight="Bold"></Label>
+                    <Image Height="20" Width="20" Source="/Resources/home.png" />
+                    <Label Content="Accueil" FontFamily="Dubai" FontWeight="Bold" />
                 </StackPanel>
             </Button>
 
             <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Evenements" Click="BTN_Evenements_Click">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/if_piste.png"></Image>
-                    <Label Content="Evènements" FontFamily="Dubai" FontWeight="Bold"></Label>
+                    <Image Height="20" Width="20" Source="/Resources/if_piste.png" />
+                    <Label Content="Evènements" FontFamily="Dubai" FontWeight="Bold" />
                 </StackPanel>
             </Button>
 
             <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Contacts" Click="BTN_Contacts_Click">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/if_user.png"></Image>
-                    <Label Content="Contacts" FontFamily="Dubai" FontWeight="Bold"></Label>
+                    <Image Height="20" Width="20" Source="/Resources/if_user.png" />
+                    <Label Content="Contacts" FontFamily="Dubai" FontWeight="Bold" />
                 </StackPanel>
             </Button>
 
             <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_ToDoList" Click="BTN_ToDoList_Click">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/todolist.png"></Image>
-                    <Label Content="A faire" FontFamily="Dubai" FontWeight="Bold"></Label>
+                    <Image Height="20" Width="20" Source="/Resources/todolist.png" />
+                    <Label Content="A faire" FontFamily="Dubai" FontWeight="Bold" />
                 </StackPanel>
             </Button>
 
             <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Messages" Click="BTN_Messages_Click">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/messages.png"></Image>
-                    <Label Content="Messages" FontFamily="Dubai" FontWeight="Bold"></Label>
+                    <Image Height="20" Width="20" Source="/Resources/messages.png" />
+                    <Label Content="Messages" FontFamily="Dubai" FontWeight="Bold" />
                 </StackPanel>
             </Button>
         </StackPanel>
 
-        <!-- Contenu principal -->
+        <!-- Contenu principal avec Frame pour navigation -->
         <Grid Grid.Column="1" Background="SeaShell" x:Name="Window_content">
             <StackPanel Margin="20">
                 <!-- Barre de recherche -->
@@ -85,8 +86,7 @@
                                    Foreground="Gray" 
                                    VerticalAlignment="Center" 
                                    Margin="5,0,0,0" 
-                                   IsHitTestVisible="False" 
-                                   ></TextBlock>
+                                   IsHitTestVisible="False" />
                     </Grid>
                     <Button Content="🔍" Width="30" Height="30"/>
                 </StackPanel>
@@ -94,8 +94,8 @@
                 <!-- Titre -->
                 <TextBlock Text="Tous" FontSize="24" FontWeight="Bold" VerticalAlignment="Top" Margin="0,0,0,20"/>
 
-                <!-- Contenu supplémentaire -->
-                
+                <!-- Frame pour afficher les pages -->
+                <Frame x:Name="MainFrame" Grid.Column="1" />
             </StackPanel>
         </Grid>
     </Grid>

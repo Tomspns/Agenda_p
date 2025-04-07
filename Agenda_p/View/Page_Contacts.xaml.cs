@@ -2,17 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Agenda_p.View
 {
@@ -70,8 +63,49 @@ namespace Agenda_p.View
             // Crée une nouvelle instance de la page d'ajout de contact
             var addContactPage = new Page_AddUser();
 
-            // Change le contenu de la fenêtre principale
-            Application.Current.MainWindow.Content = addContactPage; // Utiliser MainWindow
+            // Naviguer à la page d'ajout de contact
+            var mainWindow = Application.Current.MainWindow as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(addContactPage); // Utiliser MainFrame pour naviguer
+            }
+        }
+
+        private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Vérifie si un contact est sélectionné
+            if (ContactsListView.SelectedItem is Contact selectedContact)
+            {
+                UserDeleteDao userDeleteDao = new UserDeleteDao();
+                userDeleteDao.DeleteUser(selectedContact.IdContacts); // Supprime l'utilisateur sélectionné
+
+                // Recharger la liste des contacts après suppression
+                LoadContacts();
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner un contact à supprimer.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        // Supprimer les gestionnaires MouseEnter et MouseLeave car ils ne sont plus nécessaires
+
+        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T typedChild)
+                {
+                    return typedChild;
+                }
+                var childOfChild = FindVisualChild<T>(child);
+                if (childOfChild != null)
+                {
+                    return childOfChild;
+                }
+            }
+            return null;
         }
     }
 }

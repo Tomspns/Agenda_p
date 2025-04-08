@@ -5,98 +5,235 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Agenda_p"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Background="#F5F5F5"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResize"
+        MinWidth="600" MinHeight="400">
 
     <Window.Resources>
+        <!-- Modern button style with hover effect -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="5" 
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="10,5">
+                            <ContentPresenter HorizontalAlignment="Left" 
                                               VerticalAlignment="Center"/>
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="3" Opacity="0.2" />
+                            </Border.Effect>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E05263"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#C26B6B"/>
+            <Setter Property="Background" Value="#FF5A6B"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+
+        <!-- Window control button style -->
+        <Style x:Key="WindowControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="15" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Label style for button content -->
+        <Style x:Key="ButtonLabelStyle" TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+        </Style>
+
+        <!-- Toggle button for sidebar -->
+        <Style x:Key="ToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border" Background="Transparent" Padding="5">
+                            <Path x:Name="hamburgerIcon" Data="M0,0 L18,0 M0,7 L18,7 M0,14 L18,14" 
+                                  Stroke="#444" StrokeThickness="2" 
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="hamburgerIcon" Property="Data" Value="M0,0 L18,14 M0,14 L18,0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Border CornerRadius="10" Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Menu latéral -->
-        <StackPanel Background="#EAB8B8" VerticalAlignment="Stretch" Grid.Column="0">
-            <Ellipse Width="60" Height="60" Fill="#C26B6B" HorizontalAlignment="Center" Margin="10"/>
+            <!-- Top bar with window controls -->
+            <Grid Grid.Row="0" Background="Transparent" Height="40">
+                <ToggleButton x:Name="SidebarToggle" Style="{StaticResource ToggleButtonStyle}" 
+                              Width="30" Height="30" HorizontalAlignment="Left" Margin="10,5,0,5"
+                              Checked="SidebarToggle_Checked" Unchecked="SidebarToggle_Unchecked"/>
 
-            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Accueil" Click="BTN_Accueil_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/home.png" />
-                    <Label Content="Accueil" FontFamily="Dubai" FontWeight="Bold" />
+                <TextBlock Text="Agenda" FontSize="16" FontWeight="SemiBold" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,10,5">
+                    <!-- Minimize button -->
+                    <Button Style="{StaticResource WindowControlButtonStyle}" 
+                            Background="#FFD6DE" Click="MinimizeButton_Click">
+                        <Path Data="M0,0 L10,0" Stroke="#444" StrokeThickness="1" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+
+                    <!-- Maximize button -->
+                    <Button Style="{StaticResource WindowControlButtonStyle}" 
+                            Background="#FFB6C1" Click="MaximizeButton_Click">
+                        <Path Data="M0,0 L8,0 L8,8 L0,8 Z" Stroke="#444" StrokeThickness="1" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Transparent"/>
+                    </Button>
+
+                    <!-- Close button -->
+                    <Button Style="{StaticResource WindowControlButtonStyle}" 
+                            Background="#FF5A6B" Click="CloseButton_Click">
+                        <Path Data="M0,0 L8,8 M0,8 L8,0" Stroke="White" StrokeThickness="1.5" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
                 </StackPanel>
-            </Button>
+            </Grid>
 
-            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Evenements" Click="BTN_Evenements_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/if_piste.png" />
-                    <Label Content="Evènements" FontFamily="Dubai" FontWeight="Bold" />
-                </StackPanel>
-            </Button>
+            <!-- Main content grid -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <!-- Sidebar column - will be adjusted dynamically -->
+                    <ColumnDefinition x:Name="SidebarColumn" Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Contacts" Click="BTN_Contacts_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/if_user.png" />
-                    <Label Content="Contacts" FontFamily="Dubai" FontWeight="Bold" />
-                </StackPanel>
-            </Button>
+                <!-- Sidebar with gradient - collapsible -->
+                <Grid x:Name="Sidebar" Grid.Column="0" Width="250">
+                    <Border CornerRadius="0,0,0,10">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#F8E1E5" Offset="0"/>
+                                <GradientStop Color="#FFD6DE" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
 
-            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_ToDoList" Click="BTN_ToDoList_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/todolist.png" />
-                    <Label Content="A faire" FontFamily="Dubai" FontWeight="Bold" />
-                </StackPanel>
-            </Button>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel>
+                                <!-- App logo/avatar -->
+                                <Border Width="80" Height="80" CornerRadius="40" Margin="0,20,0,20" HorizontalAlignment="Center">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#FF5A6B" Offset="0"/>
+                                            <GradientStop Color="#E05263" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
+                                    </Border.Effect>
+                                </Border>
 
-            <Button Margin="10" Width="180" Height="30" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Messages" Click="BTN_Messages_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Width="20" Source="/Resources/messages.png" />
-                    <Label Content="Messages" FontFamily="Dubai" FontWeight="Bold" />
-                </StackPanel>
-            </Button>
-        </StackPanel>
+                                <!-- Navigation buttons -->
+                                <Button Margin="10,5" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Accueil" Click="BTN_Accueil_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Height="20" Width="20" Source="/Resources/home.png" />
+                                        <Label Content="Accueil" Style="{StaticResource ButtonLabelStyle}" />
+                                    </StackPanel>
+                                </Button>
 
-        <!-- Contenu principal avec Frame pour navigation -->
-        <Grid Grid.Column="1" Background="SeaShell" x:Name="Window_content">
-            <StackPanel Margin="20">
-                <!-- Barre de recherche -->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Grid>
-                        <TextBox Width="300" Height="30" Margin="0,0,10,0"/>
-                        <TextBlock Text="Recherche..." 
-                                   Foreground="Gray" 
-                                   VerticalAlignment="Center" 
-                                   Margin="5,0,0,0" 
-                                   IsHitTestVisible="False" />
+                                <Button Margin="10,5" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Evenements" Click="BTN_Evenements_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Height="20" Width="20" Source="/Resources/if_piste.png" />
+                                        <Label Content="Evènements" Style="{StaticResource ButtonLabelStyle}" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Margin="10,5" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Contacts" Click="BTN_Contacts_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Height="20" Width="20" Source="/Resources/if_user.png" />
+                                        <Label Content="Contacts" Style="{StaticResource ButtonLabelStyle}" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Margin="10,5" Style="{StaticResource RoundedButtonStyle}" Name="BTN_ToDoList" Click="BTN_ToDoList_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Height="20" Width="20" Source="/Resources/todolist.png" />
+                                        <Label Content="A faire" Style="{StaticResource ButtonLabelStyle}" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Margin="10,5" Style="{StaticResource RoundedButtonStyle}" Name="BTN_Messages" Click="BTN_Messages_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Height="20" Width="20" Source="/Resources/messages.png" />
+                                        <Label Content="Messages" Style="{StaticResource ButtonLabelStyle}" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+
+                <!-- Main content area -->
+                <Border Grid.Column="1" Background="#FFFFFF" CornerRadius="0,0,10,0">
+                    <Grid x:Name="Window_content">
+                        <!-- Content -->
+                        <DockPanel LastChildFill="True" Margin="20,10,20,10">
+                            <TextBlock DockPanel.Dock="Top" Text="Tous" FontSize="28" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,15">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect ShadowDepth="1" BlurRadius="2" Opacity="0.2"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+
+                            <!-- Frame for page navigation with shadow effect -->
+                            <Border CornerRadius="10">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="2" BlurRadius="10" Opacity="0.1"/>
+                                </Border.Effect>
+                                <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
+                            </Border>
+                        </DockPanel>
                     </Grid>
-                    <Button Content="🔍" Width="30" Height="30"/>
-                </StackPanel>
-
-                <!-- Titre -->
-                <TextBlock Text="Tous" FontSize="24" FontWeight="Bold" VerticalAlignment="Top" Margin="0,0,0,20"/>
-
-                <!-- Frame pour afficher les pages -->
-                <Frame x:Name="MainFrame" Grid.Column="1" />
-            </StackPanel>
+                </Border>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

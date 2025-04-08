@@ -6,67 +6,253 @@
              xmlns:local="clr-namespace:Agenda_p.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Pink">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20" HorizontalAlignment="Center">
-            <Grid>
-                <TextBox Name="SearchTextBox" Width="200" Margin="0,0,10,0" />
-                <TextBlock Text="Rechercher un utilisateur..." 
-                           Foreground="Gray" 
-                           VerticalAlignment="Center"
-                           Margin="5,0,0,0" 
-                           IsHitTestVisible="False"
-                           Visibility="{Binding ElementName=SearchTextBox, Path=Text.Length}"/>
-            </Grid>
-            <Button Content="Rechercher" Click="SearchButton_Click" Background="PeachPuff"/>
-        </StackPanel>
+    <UserControl.Resources>
+        <!-- Modern Button Style -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF5A6B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="3" Opacity="0.2" />
+                            </Border.Effect>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E05263"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#D04253"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <ListView Name="ContactsListView" 
-                  Grid.Row="1" 
-                  HorizontalAlignment="Right" 
-                  VerticalAlignment="Stretch"
-                  Margin="20"
-                  Width="1000"
-                  Background="Transparent"
-                  SelectionMode="Single">
-            <!-- Permet la sélection unique -->
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="{Binding Nom}" Width="100"/>
-                        <TextBlock Text="{Binding Prénom}" Width="100"/>
-                        <TextBlock Text="{Binding Naissance}" Width="100"/>
-                        <TextBlock Text="{Binding Email}" Width="200"/>
-                        <TextBlock Text="{Binding Numéro}" Width="200"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.Resources>
-                <Style TargetType="GridViewColumnHeader">
-                    <Setter Property="Background" Value="PeachPuff"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                </Style>
-            </ListView.Resources>
-        </ListView>
+        <!-- Modern TextBox Style -->
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E1E4E8"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Margin="{TemplateBinding Padding}" 
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5A6B"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5A6B"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="20">
-            <Button Content="Ajouter un Contact" 
-                    Click="AddContactButton_Click" 
-                    Width="200" 
-                    Height="50"
-                    Background="PeachPuff"/>
-            <Button Content="Supprimer un Contact" 
-                    Click="DeleteUserButton_Click" 
-                    Width="200"
-                    Height="50"
-                    Margin="10,0,0,0"
-                    Background="PeachPuff"/>
-        </StackPanel>
-    </Grid>
+        <!-- ListView Item Style -->
+        <Style x:Key="ContactListItemStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="#E1E4E8" 
+                                BorderThickness="1" 
+                                CornerRadius="6"
+                                Margin="{TemplateBinding Margin}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="4" Opacity="0.1" />
+                            </Border.Effect>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#F8F9FA"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FFD6DE"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#FFE8EC"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF5A6B"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Text Block Style -->
+        <Style x:Key="ContactTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Border CornerRadius="10" Background="White">
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#FFFFFF" Offset="0"/>
+                    <GradientStop Color="#F8F9FA" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Search Panel -->
+            <Border Grid.Row="0" 
+                    Background="White" 
+                    CornerRadius="8" 
+                    Margin="20,20,20,10" 
+                    BorderBrush="#E1E4E8"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="5" Opacity="0.1" />
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Name="SearchTextBox" 
+                             Grid.Column="0"
+                             Style="{StaticResource ModernTextBoxStyle}"
+                             Margin="0,0,10,0"/>
+
+                    <Button Content="Rechercher" 
+                            Grid.Column="1"
+                            Click="SearchButton_Click" 
+                            Style="{StaticResource ModernButtonStyle}"/>
+                </Grid>
+            </Border>
+
+            <!-- Contacts List -->
+            <Border Grid.Row="1" 
+                    Background="White" 
+                    CornerRadius="8" 
+                    Margin="20,10" 
+                    BorderBrush="#E1E4E8"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="5" Opacity="0.1" />
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Column Headers -->
+                    <Grid Grid.Row="0" Background="#F8F9FA" Margin="15,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Nom" FontWeight="SemiBold" Style="{StaticResource ContactTextBlockStyle}"/>
+                        <TextBlock Grid.Column="1" Text="Prénom" FontWeight="SemiBold" Style="{StaticResource ContactTextBlockStyle}"/>
+                        <TextBlock Grid.Column="2" Text="Naissance" FontWeight="SemiBold" Style="{StaticResource ContactTextBlockStyle}"/>
+                        <TextBlock Grid.Column="3" Text="Email" FontWeight="SemiBold" Style="{StaticResource ContactTextBlockStyle}"/>
+                        <TextBlock Grid.Column="4" Text="Numéro" FontWeight="SemiBold" Style="{StaticResource ContactTextBlockStyle}"/>
+                    </Grid>
+
+                    <!-- Contact List -->
+                    <ListView Name="ContactsListView" 
+                              Grid.Row="1"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              Margin="5"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ItemContainerStyle="{StaticResource ContactListItemStyle}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Nom}" Style="{StaticResource ContactTextBlockStyle}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Prénom}" Style="{StaticResource ContactTextBlockStyle}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Naissance}" Style="{StaticResource ContactTextBlockStyle}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Email}" Style="{StaticResource ContactTextBlockStyle}"/>
+                                    <TextBlock Grid.Column="4" Text="{Binding Numéro}" Style="{StaticResource ContactTextBlockStyle}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
+
+            <!-- Action Buttons -->
+            <Border Grid.Row="2" 
+                    Background="White" 
+                    CornerRadius="8" 
+                    Margin="20,10,20,20" 
+                    BorderBrush="#E1E4E8"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="5" Opacity="0.1" />
+                </Border.Effect>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Ajouter un Contact" 
+                            Click="AddContactButton_Click" 
+                            Style="{StaticResource ModernButtonStyle}"
+                            Margin="0,0,10,0"/>
+
+                    <Button Content="Supprimer un Contact" 
+                            Click="DeleteUserButton_Click" 
+                            Style="{StaticResource ModernButtonStyle}"
+                            Background="#FF7A8B"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
 </UserControl>

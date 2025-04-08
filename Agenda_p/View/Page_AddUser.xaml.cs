@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace Agenda_p.View
 {
-    /// <summary>
-    /// Logique d'interaction pour Page_AddUser.xaml
-    /// </summary>
     public partial class Page_AddUser : UserControl
     {
         public Page_AddUser()
@@ -26,37 +23,57 @@ namespace Agenda_p.View
             InitializeComponent();
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        private void NomTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var firstName = FirstNameTextBox.Text;
-            var lastName = LastNameTextBox.Text;
-            var birthDate = BirthDatePicker.SelectedDate;
+            NomPlaceholder.Visibility = string.IsNullOrWhiteSpace(NomTextBox.Text) ? Visibility.Visible : Visibility.Collapsed;
+        }
 
-            if (birthDate.HasValue)
+        private void PrénomTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            PrénomPlaceholder.Visibility = string.IsNullOrWhiteSpace(PrénomTextBox.Text) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void EmailTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EmailPlaceholder.Visibility = string.IsNullOrWhiteSpace(EmailTextBox.Text) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void NuméroTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            NuméroPlaceholder.Visibility = string.IsNullOrWhiteSpace(NuméroTextBox.Text) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void ConfirmAddContactButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Récupération des données saisies
+            var newContact = new Contact
             {
-                var contact = new Contact
-                {
-                    Prénom = firstName,
-                    Nom = lastName,
-                    Naissance = DateOnly.FromDateTime(birthDate.Value), // Conversion de DateTime à DateOnly
-                    Email = EmailTextBox.Text,
-                    Numéro = PhoneTextBox.Text
-                };
+                Nom = NomTextBox.Text,
+                Prénom = PrénomTextBox.Text,
+                Naissance = DateOnly.FromDateTime(NaissanceDatePicker.SelectedDate.Value), // Remplace par une date appropriée
+                Email = EmailTextBox.Text,
+                Numéro = NuméroTextBox.Text
+            };
 
-                UserAddDao userAddDao = new UserAddDao();
-                userAddDao.AddUser(contact);
+            UserAddDao userAddDao = new UserAddDao();
+            userAddDao.AddUser(newContact); // Utilisation de la méthode d'ajout
 
-                // Naviguer à la page de contacts
-                var mainWindow = Application.Current.MainWindow as MainWindow;
-                if (mainWindow != null)
-                {
-                    mainWindow.MainFrame.Navigate(new Page_Contacts()); // Naviguer vers Page_Contacts
-                }
-            }
-            else
-            {
-                MessageBox.Show("Veuillez sélectionner une date de naissance.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            // Réinitialiser les champs après l'ajout
+            NomTextBox.Clear();
+            PrénomTextBox.Clear();
+            NaissanceDatePicker.SelectedDate = null;
+            EmailTextBox.Clear();
+            NuméroTextBox.Clear();
+
+            MessageBox.Show("Contact ajouté avec succès!", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Retour à la page des contacts
+            var contactsPage = new Page_Contacts();
+            var window = Window.GetWindow(this); // Récupérer la fenêtre principale
+            window.Content = contactsPage; // Changer le contenu de la fenêtre
         }
     }
 }

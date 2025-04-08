@@ -3,33 +3,268 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Agenda_p.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <!-- Ajout du fond blanc ici -->
-        <StackPanel>
-            <Grid Margin="5">
-                <TextBlock Text="Prénom" Foreground="Gray" VerticalAlignment="Center"/>
-                <TextBox x:Name="FirstNameTextBox" Width="200" Margin="0,5,0,0" />
-            </Grid>
-            <Grid Margin="5">
-                <TextBlock Text="Nom" Foreground="Gray" VerticalAlignment="Center"/>
-                <TextBox x:Name="LastNameTextBox" Width="200" Margin="0,5,0,0" />
-            </Grid>
-            <Grid Margin="5">
-                <TextBlock Text="Date de Naissance" Foreground="Gray" VerticalAlignment="Center"/>
-                <DatePicker x:Name="BirthDatePicker" Width="200" Margin="0,5,0,0" />
-            </Grid>
-            <Grid Margin="5">
-                <TextBlock Text="Email" Foreground="Gray" VerticalAlignment="Center"/>
-                <TextBox x:Name="EmailTextBox" Width="200" Margin="0,5,0,0" />
-            </Grid>
-            <Grid Margin="5">
-                <TextBlock Text="Numéro de Téléphone" Foreground="Gray" VerticalAlignment="Center"/>
-                <TextBox x:Name="PhoneTextBox" Width="200" Margin="0,5,0,0" />
-            </Grid>
-            <Button Content="Ajouter" Click="AddButton_Click" Margin="10" />
-        </StackPanel>
-    </Grid>
+
+    <UserControl.Resources>
+        <!-- Modern Button Style -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="3" Opacity="0.2" />
+                            </Border.Effect>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.9"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="2" BlurRadius="5" Opacity="0.3" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern TextBox Style -->
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E1E4E8"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Margin="{TemplateBinding Padding}" 
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#5FB0E5"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#5FB0E5"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="#5FB0E5" Opacity="0.2" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern DatePicker Style -->
+        <Style x:Key="ModernDatePickerStyle" TargetType="DatePicker">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E1E4E8"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8"
+                                Padding="5,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <DatePickerTextBox x:Name="PART_TextBox" 
+                                                  Grid.Column="0"
+                                                  Focusable="True"
+                                                  HorizontalContentAlignment="Left"
+                                                  VerticalContentAlignment="Center"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  Padding="{TemplateBinding Padding}"/>
+                                <Button x:Name="PART_Button" 
+                                        Grid.Column="1"
+                                        Focusable="False"
+                                        Background="Transparent"
+                                        BorderThickness="0">
+                                    <Path Data="M8,0 L16,0 L16,16 L0,16 L0,8 Z" 
+                                          Fill="#5FB0E5" 
+                                          Width="16" 
+                                          Height="16"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#5FB0E5"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#5FB0E5"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Label Style -->
+        <Style x:Key="FormLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#555555"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+
+        <!-- Placeholder Style -->
+        <Style x:Key="PlaceholderStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#AAAAAA"/>
+            <Setter Property="Margin" Value="12,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Border CornerRadius="12" Background="White">
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#F0F8FF" Offset="0"/>
+                    <GradientStop Color="#E6F3FF" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Border CornerRadius="10" 
+                    Background="White" 
+                    Margin="40" 
+                    Padding="30"
+                    BorderBrush="#E1E4E8"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="15" Opacity="0.1" />
+                </Border.Effect>
+
+                <StackPanel>
+                    <TextBlock Text="Ajouter un Contact" 
+                               FontSize="28" 
+                               FontWeight="Bold" 
+                               Foreground="#333333" 
+                               Margin="0,0,0,30">
+                        <TextBlock.Effect>
+                            <DropShadowEffect ShadowDepth="1" BlurRadius="2" Opacity="0.1"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <!-- Form Fields -->
+                    <StackPanel Width="350" HorizontalAlignment="Left">
+                        <!-- Nom Field -->
+                        <TextBlock Text="Nom" Style="{StaticResource FormLabelStyle}"/>
+                        <Grid Margin="0,0,0,15">
+                            <TextBox Name="NomTextBox" 
+                                     Style="{StaticResource ModernTextBoxStyle}" 
+                                     TextChanged="NomTextBox_TextChanged"/>
+                            <TextBlock Name="NomPlaceholder" 
+                                       Text="Nom" 
+                                       Style="{StaticResource PlaceholderStyle}" 
+                                       Visibility="Visible"/>
+                        </Grid>
+
+                        <!-- Prénom Field -->
+                        <TextBlock Text="Prénom" Style="{StaticResource FormLabelStyle}"/>
+                        <Grid Margin="0,0,0,15">
+                            <TextBox Name="PrénomTextBox" 
+                                     Style="{StaticResource ModernTextBoxStyle}" 
+                                     TextChanged="PrénomTextBox_TextChanged"/>
+                            <TextBlock Name="PrénomPlaceholder" 
+                                       Text="Prénom" 
+                                       Style="{StaticResource PlaceholderStyle}" 
+                                       Visibility="Visible"/>
+                        </Grid>
+
+                        <!-- Date de Naissance Field -->
+                        <TextBlock Text="Date de Naissance" Style="{StaticResource FormLabelStyle}"/>
+                        <DatePicker Name="NaissanceDatePicker" 
+                                    Style="{StaticResource ModernDatePickerStyle}" 
+                                    Margin="0,0,0,15"/>
+
+                        <!-- Email Field -->
+                        <TextBlock Text="Email" Style="{StaticResource FormLabelStyle}"/>
+                        <Grid Margin="0,0,0,15">
+                            <TextBox Name="EmailTextBox" 
+                                     Style="{StaticResource ModernTextBoxStyle}" 
+                                     TextChanged="EmailTextBox_TextChanged"/>
+                            <TextBlock Name="EmailPlaceholder" 
+                                       Text="Email" 
+                                       Style="{StaticResource PlaceholderStyle}" 
+                                       Visibility="Visible"/>
+                        </Grid>
+
+                        <!-- Numéro Field -->
+                        <TextBlock Text="Numéro de téléphone" Style="{StaticResource FormLabelStyle}"/>
+                        <Grid Margin="0,0,0,25">
+                            <TextBox Name="NuméroTextBox" 
+                                     Style="{StaticResource ModernTextBoxStyle}" 
+                                     TextChanged="NuméroTextBox_TextChanged"/>
+                            <TextBlock Name="NuméroPlaceholder" 
+                                       Text="Numéro de téléphone" 
+                                       Style="{StaticResource PlaceholderStyle}" 
+                                       Visibility="Visible"/>
+                        </Grid>
+
+                        <!-- Action Buttons -->
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button Content="Ajouter" 
+                                    Click="ConfirmAddContactButton_Click" 
+                                    Style="{StaticResource ModernButtonStyle}"
+                                    Background="#5FB0E5"
+                                    Width="150"
+                                    Margin="0,0,15,0"/>
+
+                            <Button Content="Retour" 
+                                    Click="BackButton_Click" 
+                                    Style="{StaticResource ModernButtonStyle}"
+                                    Background="#FF5A6B"
+                                    Width="150"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
 </UserControl>

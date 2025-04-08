@@ -58,4 +58,38 @@ public partial class MainWindow : Window
         Page_Accueil pageaccueil = new Page_Accueil();
         Window_content.Children.Add(pageaccueil);
     }
+
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
+    }
+
+    // Méthode pour maximiser ou restaurer la fenêtre
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (this.WindowState == WindowState.Normal)
+        {
+            this.WindowState = WindowState.Maximized;
+        }
+        else
+        {
+            this.WindowState = WindowState.Normal;
+        }
+    }
+
+    // Méthode pour fermer la fenêtre
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private void SidebarToggle_Checked(object sender, RoutedEventArgs e)
+    {
+        Sidebar.Width = 250; // Ajuste la largeur de la barre latérale pour l'afficher
+    }
+
+    private void SidebarToggle_Unchecked(object sender, RoutedEventArgs e)
+    {
+        Sidebar.Width = 0; // Réduit la largeur à 0 pour masquer la barre latérale
+    }
 }
